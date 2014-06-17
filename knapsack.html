@@ -6,11 +6,11 @@
 $(function() {
 
     function hide(item) {
-        item.fadeTo(100, 0);
+        item.fadeTo(500, 0);
     }
 
     function show(item) {
-        item.fadeTo(100, 0);
+        item.fadeTo(500, 1);
     }
 
     function toggle(isUpShown, num) {
@@ -30,7 +30,6 @@ $(function() {
     }
 
     $("tr#upitem img").each(function() {
-        show($(this));
         $(this).click(function() {
             var isShown = ($(this).attr("data-shown") == 1)
             var num = $(this).attr("class");
@@ -38,7 +37,7 @@ $(function() {
         })
     })
     $("tr#downitem img").each(function() {
-        hide($(this));
+        $(this).fadeTo(0,0);
         $(this).click(function() {
             var isShown = ($(this).attr("data-shown") == 1)
             var num = $(this).attr("class");
@@ -60,6 +59,9 @@ img {
 <table>
     <tr id="upitem">
         <td>
+            House
+        </td>
+        <td>
             <img class="1" data-shown="1" data-price="100" data-weight="100" src="todo.jpg" /> 
         </td>
         <td>
@@ -76,6 +78,9 @@ img {
         </td>
     </tr>
     <tr id="downitem">
+        <td>
+            Knapsack
+        </td>
         <td>
             <img class="1" data-shown="0" data-price="100" data-weight="100" src="todo.jpg" /> 
         </td>
