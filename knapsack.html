@@ -1,0 +1,99 @@
+<html>
+
+<head>
+<script type="text/javascript" src="./jquery-1.11.1.min.js"></script>
+<script>
+$(function() {
+
+    function hide(item) {
+        item.fadeTo(100, 0);
+    }
+
+    function show(item) {
+        item.fadeTo(100, 0);
+    }
+
+    function toggle(isUpShown, num) {
+            downItem = $("tr#downitem img."+num);
+            upItem = $("tr#upitem img."+num);
+        if (isUpShown) {
+            hide(upItem);
+            show(downItem);
+            upItem.attr("data-shown", 0);
+            downItem.attr("data-shown", 1);
+        } else {
+            show(upItem);
+            hide(downItem);
+            downItem.attr("data-shown", 0);
+            upItem.attr("data-shown", 1);
+        }
+    }
+
+    $("tr#upitem img").each(function() {
+        show($(this));
+        $(this).click(function() {
+            var isShown = ($(this).attr("data-shown") == 1)
+            var num = $(this).attr("class");
+            toggle(isShown, num);
+        })
+    })
+    $("tr#downitem img").each(function() {
+        hide($(this));
+        $(this).click(function() {
+            var isShown = ($(this).attr("data-shown") == 1)
+            var num = $(this).attr("class");
+            toggle(!isShown, num);
+        })
+    })
+})
+</script>
+
+<style>
+img {
+    height:100;
+    width:100;
+}
+</style>
+</head>
+
+<body>
+<table>
+    <tr id="upitem">
+        <td>
+            <img class="1" data-shown="1" data-price="100" data-weight="100" src="todo.jpg" /> 
+        </td>
+        <td>
+            <img class="2" data-shown="1" data-price="100" data-weight="100" src="todo.jpg" /> 
+        </td>
+        <td>
+            <img class="3" data-shown="1" data-price="100" data-weight="100" src="todo.jpg" /> 
+        </td>
+        <td>
+            <img class="4" data-shown="1" data-price="100" data-weight="100" src="todo.jpg" /> 
+        </td>
+        <td>
+            <img class="5" data-shown="1" data-price="100" data-weight="100" src="todo.jpg" /> 
+        </td>
+    </tr>
+    <tr id="downitem">
+        <td>
+            <img class="1" data-shown="0" data-price="100" data-weight="100" src="todo.jpg" /> 
+        </td>
+        <td>
+            <img class="2" data-shown="0" data-price="100" data-weight="100" src="todo.jpg" /> 
+        </td>
+        <td>
+            <img class="3" data-shown="0" data-price="100" data-weight="100" src="todo.jpg" /> 
+        </td>
+        <td>
+            <img class="4" data-shown="0" data-price="100" data-weight="100" src="todo.jpg" /> 
+        </td>
+        <td>
+            <img class="5" data-shown="0" data-price="100" data-weight="100" src="todo.jpg" /> 
+        </td>
+    </tr>
+</table>
+
+</body>
+
+</html>
