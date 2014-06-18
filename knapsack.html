@@ -5,11 +5,11 @@
 <script>
 $(function() {
 
-    function hide(item) {
+    function hideByFade(item) {
         item.fadeTo(500, 0);
     }
 
-    function show(item) {
+    function showByFade(item) {
         item.fadeTo(500, 1);
     }
 
@@ -17,13 +17,13 @@ $(function() {
             downItem = $("tr#downitem img."+num);
             upItem = $("tr#upitem img."+num);
         if (isUpShown) {
-            hide(upItem);
-            show(downItem);
+            hideByFade(upItem);
+            showByFade(downItem);
             upItem.attr("data-shown", 0);
             downItem.attr("data-shown", 1);
         } else {
-            show(upItem);
-            hide(downItem);
+            showByFade(upItem);
+            hideByFade(downItem);
             downItem.attr("data-shown", 0);
             upItem.attr("data-shown", 1);
         }
