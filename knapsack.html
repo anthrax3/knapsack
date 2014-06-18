@@ -5,46 +5,84 @@
 <script>
 $(function() {
 
-    function hideByFade(item) {
-        item.fadeTo(500, 0);
+
+    // GLOBAL VARIABLES
+
+    var knapsackWeight = 0;
+    var knapsackValue = 0;
+    var knapsackMaxWeight = 300;
+
+
+    // FUNCTIONS
+
+    function toggleFade(itemSelector, shouldShow) {
+        //itemSelector: a jQuery selector
+        //shouldShow: true if should show; false if should hide
+        var opacity = shouldShow ? 1 : 0;
+        itemSelector.fadeTo(500, opacity);
     }
 
-    function showByFade(item) {
-        item.fadeTo(500, 1);
+    function flipItem(upItemSelector, downItemSelector, isInHouse) {
+        //upItemSelector: the upper item (the one in the house)
+        //downItemSelector: the lower item (the one in the knapsack)
+        //isInHouse: true if item in house; false if item in knapsack
+        toggleFade(downItemSelector, isInHouse);
+        toggleFade(upItemSelector, !isInHouse);
+        upItemSelector.attr("data-shown", !isInHouse);
     }
 
-    function toggle(isUpShown, num) {
-            downItem = $("tr#downitem img."+num);
-            upItem = $("tr#upitem img."+num);
-        if (isUpShown) {
-            hideByFade(upItem);
-            showByFade(downItem);
-            upItem.attr("data-shown", 0);
-            downItem.attr("data-shown", 1);
+    function updateValues(weight, value) {
+        knapsackWeight += weight;
+        knapsackValue += value;
+        $("span#value").html(""+knapsackValue);
+        $("span#weight").html(""+knapsackValue);
+    }
+
+    function toggle(num) {
+        //This is an event that occurs whenever the item at `num' is clicked
+
+        //num: the column number (represented as the class of the DOM element) of the relevant item
+        var downItemSelector = $("tr#knapsack img."+num);
+        var upItemSelector = $("tr#house img."+num);
+        var isInHouse = upItemSelector.attr("data-shown"); //true if shown
+        isInHouse = (isInHouse === "true") ? true : false;
+
+        var itemWeight = parseInt(upItemSelector.attr("data-weight"));
+        var itemValue = parseInt(upItemSelector.attr("data-value"));
+
+        var newWeight = knapsackWeight + itemWeight
+
+        if (isInHouse) {
+            // In this case, we first need to check if knapsack is full!
+            if (knapsackMaxWeight < newWeight) {
+                alert("Not enough room in knapsack");
+            } else {
+                updateValues(itemWeight, itemValue);
+                flipItem(upItemSelector, downItemSelector, isInHouse);
+            }
         } else {
-            showByFade(upItem);
-            hideByFade(downItem);
-            downItem.attr("data-shown", 0);
-            upItem.attr("data-shown", 1);
+            updateValues(-itemWeight, -itemValue);
+            flipItem(upItemSelector, downItemSelector, isInHouse);
         }
     }
 
-    $("tr#upitem img").each(function() {
+
+
+    //MAIN METHOD
+    
+    updateValues(0,0);
+
+    $("tr img").each(function() {
         $(this).click(function() {
-            var isShown = ($(this).attr("data-shown") == 1)
             var num = $(this).attr("class");
-            toggle(isShown, num);
-        })
-    })
-    $("tr#downitem img").each(function() {
+            toggle(num);
+        });
+    });
+
+    $("tr#knapsack img").each(function() {
         $(this).fadeTo(0,0);
-        $(this).click(function() {
-            var isShown = ($(this).attr("data-shown") == 1)
-            var num = $(this).attr("class");
-            toggle(!isShown, num);
-        })
-    })
-})
+    });
+});
 </script>
 
 <style>
@@ -52,50 +90,67 @@ img {
     height:100;
     width:100;
 }
+img:hover {
+    cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 <table>
-    <tr id="upitem">
+    <tr id="house">
         <td>
             House
         </td>
         <td>
-            <img class="1" data-shown="1" data-price="100" data-weight="100" src="todo.jpg" /> 
+            <img class="1" data-shown=true data-value="100" data-weight="100" src="1.jpg" /> 
         </td>
         <td>
-            <img class="2" data-shown="1" data-price="100" data-weight="100" src="todo.jpg" /> 
+            <img class="2" data-shown=true data-value="100" data-weight="100" src="2.jpg" /> 
         </td>
         <td>
-            <img class="3" data-shown="1" data-price="100" data-weight="100" src="todo.jpg" /> 
+            <img class="3" data-shown=true data-value="100" data-weight="100" src="3.jpg" /> 
         </td>
         <td>
-            <img class="4" data-shown="1" data-price="100" data-weight="100" src="todo.jpg" /> 
+            <img class="4" data-shown=true data-value="100" data-weight="100" src="4.jpg" /> 
         </td>
         <td>
-            <img class="5" data-shown="1" data-price="100" data-weight="100" src="todo.jpg" /> 
+            <img class="5" data-shown=true data-value="100" data-weight="100" src="5.jpg" /> 
+        </td>
+        <td>
+            <img class="6" data-shown=true data-value="100" data-weight="100" src="6.jpg" /> 
+        </td>
+        <td>
         </td>
     </tr>
-    <tr id="downitem">
+    <tr id="knapsack">
         <td>
-            Knapsack
+            Knapsack <!--TODO: Add reset button here-->
         </td>
         <td>
-            <img class="1" data-shown="0" data-price="100" data-weight="100" src="todo.jpg" /> 
+            <img class="1" src="1.jpg" /> 
         </td>
         <td>
-            <img class="2" data-shown="0" data-price="100" data-weight="100" src="todo.jpg" /> 
+            <img class="2" src="2.jpg" /> 
         </td>
         <td>
-            <img class="3" data-shown="0" data-price="100" data-weight="100" src="todo.jpg" /> 
+            <img class="3" src="3.jpg" /> 
         </td>
         <td>
-            <img class="4" data-shown="0" data-price="100" data-weight="100" src="todo.jpg" /> 
+            <img class="4" src="4.jpg" /> 
         </td>
         <td>
-            <img class="5" data-shown="0" data-price="100" data-weight="100" src="todo.jpg" /> 
+            <img class="5" src="5.jpg" /> 
         </td>
+        <td>
+            <img class="6" src="6.jpg" /> 
+        </td>
+        <td>
+            Value: $<span id="value"></span>
+            Weight: <span id="weight"></span> kg
+        </td>
+    </tr>
+    <tr id="values">
     </tr>
 </table>
 
