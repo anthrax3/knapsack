@@ -2,118 +2,8 @@
 
 <head>
 <script type="text/javascript" src="./jquery-1.11.1.min.js"></script>
-<script>
-$(function() {
+<script type="text/javascript" src="./knapsack.js"></script>
 
-
-    // GLOBAL VARIABLES
-
-    var knapsackWeight = 0;
-    var knapsackValue = 0;
-    var knapsackMaxWeight = 500;
-
-
-    // FUNCTIONS
-
-    function toggleFade(itemSelector, shouldShow) {
-        //itemSelector: a jQuery selector
-        //shouldShow: true if should show; false if should hide
-        var opacity = shouldShow ? 1 : 0;
-        itemSelector.fadeTo(300, opacity);
-    }
-
-    function getSelector(trId, num) {
-        return $("tr#"+trId+" td."+num+" img");
-    }
-
-    function flipItem(num, isInHouse) {
-        //This function is called AFTER it has been determined safe to add/remove something in the knapsack.
-        //num: the number of the item to flip
-        //isInHouse: true if item in house; false if item in knapsack
-        var upItemSelector = getSelector("house", num);
-        var downItemSelector = getSelector("knapsack", num);
-
-        toggleFade(downItemSelector, isInHouse);
-        toggleFade(upItemSelector, !isInHouse);
-
-        upItemSelector.attr("data-shown", !isInHouse);
-    }
-
-    function updateValues(weight, value) {
-        knapsackWeight += weight;
-        knapsackValue += value;
-        $("span#knapsackValue").html(knapsackValue);
-        $("span#knapsackWeight").html(knapsackWeight);
-    }
-
-    function showWarning() {
-        $("div#nope").fadeTo(500, 1);
-        $("div#nope").fadeTo(1000, 0);
-    }
-
-    function toggle(num) {
-        //This is an event that occurs whenever the item at `num' is clicked
-
-        //num: the column number (represented as the class of the DOM element) of the relevant item
-        var upItemSelector = getSelector("house", num);
-        var downItemSelector = getSelector("knapsack", num);
-        var isInHouse = upItemSelector.attr("data-shown"); //true if shown
-        isInHouse = (isInHouse === "true") ? true : false;
-
-        var itemWeight = parseInt(upItemSelector.attr("data-weight"));
-        var itemValue = parseInt(upItemSelector.attr("data-value"));
-
-        var newWeight = knapsackWeight + itemWeight
-
-        if (isInHouse) {
-            // In this case, we first need to check if knapsack is full!
-            if (knapsackMaxWeight < newWeight) {
-                showWarning();
-            } else {
-                updateValues(itemWeight, itemValue);
-                flipItem(num, isInHouse);
-            }
-        } else {
-            updateValues(-itemWeight, -itemValue);
-            flipItem(num, isInHouse);
-        }
-    }
-
-
-
-    //MAIN METHOD
-    
-    // Zero the knapsack
-    updateValues(0,0);
-    $("span#knapsackMaxWeight").html(knapsackMaxWeight);
-
-    // Set a click listener for each item
-    $("tr img").each(function() {
-        $(this).click(function() {
-            var num = $(this).parents("td").attr("class");
-            toggle(num);
-        });
-    });
-
-    // Fade all of the knapsack items
-    $("tr#knapsack img").each(function() {
-        $(this).fadeTo(0,0);
-    });
-
-    // Make all of the items' labels visible
-    $("tr#numbers span.value").each(function() {
-        var num = $(this).parents("td").attr("class");
-        $(this).html(getSelector("house", num).attr("data-value"));
-    });
-    $("tr#numbers span.weight").each(function() {
-        var num = $(this).parents("td").attr("class");
-        $(this).html(getSelector("house", num).attr("data-weight"));
-    });
-
-    // Hide the warning message
-    $("div#nope").fadeTo(0,0);
-});
-</script>
 
 <style>
 img.item {
@@ -131,26 +21,26 @@ img.basket {
 
 <body>
     <table>
-        <tr id="house">
+        <tr id="upItems">
             <td>
                 Store
             </td>
-            <td class="1">
+            <td class="t1">
                 <img class="item" data-shown=true data-value="20" data-weight="100" src="1.jpg" /> 
             </td>
-            <td class="2">
+            <td class="t2">
                 <img class="item" data-shown=true data-value="100" data-weight="100" src="2.jpg" /> 
             </td>
-            <td class="3">
+            <td class="t3">
                 <img class="item" data-shown=true data-value="100" data-weight="20" src="3.jpg" /> 
             </td>
-            <td class="4">
+            <td class="t4">
                 <img class="item" data-shown=true data-value="150" data-weight="120" src="4.jpg" /> 
             </td>
-            <td class="5">
+            <td class="t5">
                 <img class="item" data-shown=true data-value="300" data-weight="200" src="5.jpg" /> 
             </td>
-            <td class="6">
+            <td class="t6">
                 <img class="item" data-shown=true data-value="150" data-weight="200" src="6.jpg" /> 
             </td>
             <td>
@@ -163,58 +53,58 @@ img.basket {
                      <i>Too much! Basket spills!</i>
                 </div>
             </td>
-            <td class="1">
+            <td class="t1">
                 <span class="value"></span> yums<br />
                 <span class="weight"></span> grams
             </td>
-            <td class="2">
+            <td class="t2">
                 <span class="value"></span> yums<br />
                 <span class="weight"></span> grams
             </td>
-            <td class="3">
+            <td class="t3">
                 <span class="value"></span> yums<br />
                 <span class="weight"></span> grams
             </td>
-            <td class="4">
+            <td class="t4">
                 <span class="value"></span> yums<br />
                 <span class="weight"></span> grams
             </td>
-            <td class="5">
+            <td class="t5">
                 <span class="value"></span> yums<br />
                 <span class="weight"></span> grams
             </td>
-            <td class="6">
+            <td class="t6">
                 <span class="value"></span> yums<br />
                 <span class="weight"></span> grams
             </td>
             <td>
             </td>
         </tr>
-        <tr id="knapsack">
+        <tr id="downItems">
             <td>
                 Basket <!--TODO: Add reset button here-->
             </td>
-            <td class = "1">
+            <td class = "t1">
                 <img class="item" src="1.jpg" /> 
             </td>
-            <td class = "2">
+            <td class = "t2">
                 <img class="item" src="2.jpg" /> 
             </td>
-            <td class = "3">
+            <td class = "t3">
                 <img class="item" src="3.jpg" /> 
             </td>
-            <td class = "4">
+            <td class = "t4">
                 <img class="item" src="4.jpg" /> 
             </td>
-            <td class = "5">
+            <td class = "t5">
                 <img class="item" src="5.jpg" /> 
             </td>
-            <td class="6">
+            <td class = "t6">
                 <img class="item" src="6.jpg" /> 
             </td>
             <td>
-                Value: <span id="knapsackValue"></span> yums<br/>
-                Weight: <span id="knapsackWeight"></span> / <span id="knapsackMaxWeight"></span> grams
+                Value: <span id="basketValue"></span> yums<br/>
+                Weight: <span id="basketWeight"></span> / <span id="basketMaxWeight"></span> grams
             </td>
         </tr>
     </table>
