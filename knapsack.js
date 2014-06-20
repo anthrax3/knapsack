@@ -5,7 +5,7 @@ var warningShowing = false;
 $(function() {
 
 
-    // GLOBAL VARIABLES
+    // VARIABLES
 
     var basketWeight = 0;
     var basketValue = 0;
@@ -13,6 +13,8 @@ $(function() {
 
 
     // FUNCTIONS
+
+    //TODO: Make things draggable
 
     function toggleFade(itemSelector, shouldShow) {
         //itemSelector: a jQuery selector
@@ -47,6 +49,8 @@ $(function() {
 
     function showWarning() {
         if (!warningShowing) {
+            //TODO: This does not actually work; warnings flash multiple times, 
+            //such that 10 rapid clicks results in 10 slowly-flashing warnings
             warningShowing = true;
             $("div#nope").fadeTo(250, 1.0);
             $("div#nope").fadeTo(500, 0.0);
@@ -91,13 +95,14 @@ $(function() {
     $("span#basketMaxWeight").html(basketMaxWeight);
 
     // Set a click listener for each item
-    $("tr img").each(function() {
+    $("tr img.item").each(function() {
         $(this).click(function() {
             var num = $(this).parents("td").attr("class");
             toggle(num);
         });
     });
 
+    
     // Fade all of the basket items
     $("tr#downItems img").each(function() {
         $(this).fadeTo(0,0.0);

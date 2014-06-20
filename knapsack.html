@@ -1,8 +1,10 @@
 <html>
 
 <head>
-<script type="text/javascript" src="./jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="./knapsack.js"></script>
+    <title>Fruit</title>
+    <script type="text/javascript" src="./jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="./jquery-ui.min.js"></script>
+    <script type="text/javascript" src="./knapsack.js"></script>
 
 
 <style>
@@ -16,6 +18,34 @@ img.item:hover {
 img.basket {
     height:100;
 }
+
+table {
+    border-collapse:collapse;
+    text-align:center;
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+}
+div#nope {
+    color: red;
+}
+
+tr {
+    border:10px solid #DDDDDD;
+    border-collapse:collapse;
+}
+
+td {
+    padding:5px;
+}
+h1, p {
+    margin-bottom:5px;
+    margin-top:5px;
+}
+span#basketValue, span#basketWeight {
+    border: 1px solid black;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin: 2px;
+}
 </style>
 </head>
 
@@ -23,7 +53,7 @@ img.basket {
     <table>
         <tr id="upItems">
             <td>
-                Store
+                <img src="nope.jpg" class="basket"/><h1>Store</h1>
             </td>
             <td class="t1">
                 <img class="item" data-shown=true data-value="20" data-weight="100" src="1.jpg" /> 
@@ -43,14 +73,11 @@ img.basket {
             <td class="t6">
                 <img class="item" data-shown=true data-value="150" data-weight="200" src="6.jpg" /> 
             </td>
-            <td>
-            </td>
         </tr>
         <tr id="numbers">
             <td>
-                <img src="nope.jpg" class="basket"/>
                 <div id="nope">
-                     <i>Too much! Basket spills!</i>
+                     <p><b>Too much! Basket spills!</b></p>
                 </div>
             </td>
             <td class="t1">
@@ -77,12 +104,12 @@ img.basket {
                 <span class="value"></span> yums<br />
                 <span class="weight"></span> grams
             </td>
-            <td>
-            </td>
         </tr>
         <tr id="downItems">
             <td>
-                Basket <!--TODO: Add reset button here-->
+                <h1>Basket</h1> <!--TODO: Add reset button here-->
+                <p>Value: <span id="basketValue"></span> yums</p>
+                <p>Weight: <span id="basketWeight"></span> / <span id="basketMaxWeight"></span> grams</p>
             </td>
             <td class = "t1">
                 <img class="item" src="1.jpg" /> 
@@ -101,10 +128,6 @@ img.basket {
             </td>
             <td class = "t6">
                 <img class="item" src="6.jpg" /> 
-            </td>
-            <td>
-                Value: <span id="basketValue"></span> yums<br/>
-                Weight: <span id="basketWeight"></span> / <span id="basketMaxWeight"></span> grams
             </td>
         </tr>
     </table>
