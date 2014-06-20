@@ -11,6 +11,8 @@ $(function() {
     var basketValue = 0;
     var basketMaxWeight = 500;
 
+    var lowOpacity = 0.1;
+
 
     // FUNCTIONS
 
@@ -19,7 +21,7 @@ $(function() {
     function toggleFade(itemSelector, shouldShow) {
         //itemSelector: a jQuery selector
         //shouldShow: true if should show; false if should hide
-        var opacity = shouldShow ? 1.0 : 0.0;
+        var opacity = shouldShow ? 1.0 : lowOpacity;
         itemSelector.fadeTo(300, opacity);
     }
 
@@ -105,7 +107,7 @@ $(function() {
     
     // Fade all of the basket items
     $("tr#downItems img").each(function() {
-        $(this).fadeTo(0,0.0);
+        $(this).fadeTo(0,lowOpacity);
     });
 
     // Make all of the items' labels visible
